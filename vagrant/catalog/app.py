@@ -4,7 +4,7 @@ from flask import Flask, redirect, render_template
 
 app = Flask(__name__)
 
-# bootstrap = Bootstrap(app)
+
 
 @app.route('/index')
 @app.route('/')
