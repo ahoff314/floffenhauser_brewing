@@ -17,7 +17,7 @@ def home():
 
 @app.route('/breweries/<int:brewery_id>/')
 def index(brewery_id):
-    brewery = session.query(Brewery).first()
+    brewery = session.query(Brewery).first() # SHould we use dot first??
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return render_template('beers.html', brewery=brewery, beers=beers)
 

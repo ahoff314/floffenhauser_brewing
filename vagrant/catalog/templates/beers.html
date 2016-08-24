@@ -11,12 +11,18 @@
 <h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
 <p class="main">{{ brewery.name }}</p>
 
-<p>
+<div>
     {% for i in beers %}
-    {{i.name}}
-    {{i.style}}
+    <div>Name | {{i.name}}</div>
+
+    <div>Style | {{i.style}}</div>
+    <div>
+        <a href='{{url_for('editBeer', brewery_id = brewery.id, id = i.id) }}'>Edit</a>
+        <a href='{{url_for('deleteBeer', brewery_id = brewery.id, id = i.id) }}'>Delete</a>
+    </div>
     {% endfor %}
-</p>
+</div>
+
 
 
 
