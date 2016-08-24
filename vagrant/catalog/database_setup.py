@@ -28,13 +28,13 @@ class Beer(Base):
         Integer, primary_key=True)
     style = Column(
         String(80))
-    brewery = Column(
+    brewery_id = Column(
         Integer, ForeignKey('breweries.id'))
 
 
 #### INSERT at end of file ####
 engine = create_engine(
-    'sqlite:///brews.db'
+    'sqlite:///brew.db'
 )
 
 Base.metadata.create_all(engine)
