@@ -15,13 +15,11 @@
 
 <br>
 <h1 class="text-center">Featuring:</h1>
-
-    {% for i in brewery %}
     <br>
-        <h1 class="text-center">{{i.name}}</h1>
+        {% for i in brewery %}
+            <h1 class="text-center">{{i.name}}</h1>
+        {% endfor %}
     </br>
-    {% endfor %}
-
 
 </br>
 
