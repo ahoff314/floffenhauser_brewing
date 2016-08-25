@@ -13,7 +13,8 @@ session = DBSession()
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    brewery = session.query(Brewery).all()
+    return render_template('index.html', brewery=brewery)
 
 @app.route('/breweries/<int:brewery_id>/')
 def index(brewery_id):
@@ -44,19 +45,19 @@ def editBeer(brewery_id, id):
         session.commit()
         return redirect(url_for('index', brewery_id=brewery_id))
     else:
-        return render_template('newbeer.html', brewery_id=brewery_id, i=editedItem)
+        return render_template('editbeer.html', brewery_id=brewery_id, i=editedItem)
 
 #create route for delete beers
 
-@app.route('/breweries/<int:brewery_id>/<int:id>/delete/', methods=['GET', 'POST', 'DELETE'])
+@app.route('/breweries/<int:brewery_id>/<int:id>/delete/', methods=['GET', 'POST'])
 def deleteBeer(brewery_id, id):
+    itemToDelete = session.query(Beer).filter_by(id=id).one()
     if request.method == 'POST':
-        newBeer = Beer(name=request.form['name'], brewery_id=brewery_id)
-        session.add(newBeer)
+        session.delete(itemToDelete)
         session.commit()
-        return redirect(url_for('index', brewery_id=brewery_id))
+        return redirect(url_for('index', brewery_id = brewery_id))
     else:
-        return render_template('newbeer.html', brewery_id=brewery_id)
+        return render_template('deletebeer.html', i = itemToDelete)
 
 
 @app.route('/about')

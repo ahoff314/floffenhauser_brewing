@@ -9,7 +9,13 @@
 {% block content %}
 
 <h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
-<p class="main">Lorem Ipsum Beersum</p>
+<p class="main">Community homebrew and microbrew festival featuring:</p>
+
+    {% for i in brewery %}
+    <br>
+        <div>{{i.name}}</div>
+    </br>
+    {% endfor %}
 
 
 

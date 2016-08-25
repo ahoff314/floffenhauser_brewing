@@ -6,15 +6,17 @@
 
 {% block content %}
 
-<h1 class="page-header main"> New Beer</h1>
+<h1 class="page-header main"> Edit Beer</h1>
 
 
-<form action="{{ url_for('newBeer', brewery_id=brewery_id )}}" method = 'POST'>
+<form action="{{ url_for('editBeer', brewery_id = brewery_id, id = i.id )}}" method = 'POST'>
 
     <p>Name:</p>
-    <input type ='text' size='50' name='name'>
+    <input type ='text' size='50' name='name' placeholder = '{{i.name}}'>
 
-<input type='submit' value='Create'>
+    <input type='submit' value='Edit'>
+
+    <a href = '{{url_for('index', brewery_id =i.id)}}'> CANCEL </a>
 
 </form>
 
