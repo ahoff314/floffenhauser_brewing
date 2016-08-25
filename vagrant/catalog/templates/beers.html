@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %} FBC {% endblock %}
+{% block title %} BEERTOPIA {% endblock %}
 
 
 
 {% block content %}
 
-<h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
+<h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS:</h1>
 <p class="main">{{ brewery.name }}</p>
 <p><a href='{{url_for('newBeer', brewery_id = brewery.id, id =id) }}'>Create new beer</a></p>
+
+<div class="alert alert-success">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <strong> {{ message }}</strong>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+</div>
 
 <div>
     {% for i in beers %}

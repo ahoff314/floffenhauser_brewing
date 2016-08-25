@@ -1,37 +1,29 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
 
+{% extends "bootstrap/base.html" %}
 
-
-{% block title %} Chk  {% endblock %}
+{% block title %} Beertopia {% endblock %}
 
 
 {% block navbar %}
 
 
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle"
-            data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only"> TOGGLE NAVIGATION</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/"> FBC</a>
-            <a class="navbar-brand" href="/about"> ABOUT </a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <!--<li><a href="/">SIGN OUT</a></li>-->
-                <!--<li><a href="/">SIGN IN</a></li> -->
-            </ul>
-        </div>
-    </div>
-</div>
+<nav class="navbar navbar-inverse bg-faded">
+  <a class="navbar-brand" href="/">Beertopia</a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/">HOME <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/about">ABOUT</a>
+    </li>
+      <li class="nav-item .pull-right">
+      <a class="nav-link" href="/">SIGN UP</a>
+    </li>
+  </ul>
+    <!--<button class="btn pull-right" type="submit">SIGN UP</button>-->
+</nav>
 
 
 
@@ -40,6 +32,8 @@
 {% block content %}
 
 
-    {% block page_content %}{% endblock %}
+    {% block page_content %}
+
+{% endblock %}
 
 {% endblock %}

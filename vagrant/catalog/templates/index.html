@@ -2,22 +2,27 @@
 
 {% extends "base.html" %}
 
-{% block title %} FBC {% endblock %}
+{% block title %} Beertopia {% endblock %}
 
 
 
 {% block content %}
 
-<h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
-<p class="main">Community homebrew and microbrew festival featuring:</p>
+<h1 class="page-header main text-center"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
+<div class="text-center">
+    <img src="static/beertopia.png">
+</div>
+
+<br>
+<h1 class="text-center">Featuring:</h1>
 
     {% for i in brewery %}
     <br>
-        <div>{{i.name}}</div>
+        <h1 class="text-center">{{i.name}}</h1>
     </br>
     {% endfor %}
 
 
-
+</br>
 
 {% endblock %}
