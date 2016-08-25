@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, request, url_for
 app = Flask(__name__)
 
 from sqlalchemy import create_engine
@@ -23,20 +23,40 @@ def index(brewery_id):
 
 # Create route for new beer CLEAN UP ROUTE NAMES  intuitive
 
-@app.route('/breweries/<int:brewery_id>/new/')
+@app.route('/breweries/<int:brewery_id>/new/', methods=['GET', 'POST'])
 def newBeer(brewery_id):
-    return " put a form here and verify permissions to add a new beer"
+    if request.method == 'POST':
+        newBeer = Beer(name=request.form['name'], brewery_id=brewery_id)
+        session.add(newBeer)
+        session.commit()
+        return redirect(url_for('index', brewery_id=brewery_id))
+    else:
+        return render_template('newbeer.html', brewery_id=brewery_id)
 
-# Create route for edit beeers
-@app.route('/breweries/<int:brewery_id>/<int:id>/edit/')
+# Create route for edit beers
+@app.route('/breweries/<int:brewery_id>/<int:id>/edit/', methods=['GET', 'POST'])
 def editBeer(brewery_id, id):
-    return " put a form here and verift authorization to edit beers"
+    editedItem = session.query(Beer).filter_by(id=id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedItem.name = request.form['name']
+        session.add(editedItem)
+        session.commit()
+        return redirect(url_for('index', brewery_id=brewery_id))
+    else:
+        return render_template('newbeer.html', brewery_id=brewery_id, i=editedItem)
 
 #create route for delete beers
 
-@app.route('/breweries/<int:brewery_id>/<int:id>/delete/')
+@app.route('/breweries/<int:brewery_id>/<int:id>/delete/', methods=['GET', 'POST', 'DELETE'])
 def deleteBeer(brewery_id, id):
-    return " put a form here and verify authorization to delete brews"
+    if request.method == 'POST':
+        newBeer = Beer(name=request.form['name'], brewery_id=brewery_id)
+        session.add(newBeer)
+        session.commit()
+        return redirect(url_for('index', brewery_id=brewery_id))
+    else:
+        return render_template('newbeer.html', brewery_id=brewery_id)
 
 
 @app.route('/about')
