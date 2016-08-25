@@ -85,7 +85,6 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
-
 if __name__ == '__main__':
     app.secret_key = 'super_secret'
     app.debug = True
