@@ -21,7 +21,7 @@ def index(brewery_id):
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return render_template('beers.html', brewery=brewery, beers=beers)
 
-# Create route for new beer CLEAN UP ROUTE NAMES more intuitive
+# Create route for new beer CLEAN UP ROUTE NAMES  intuitive
 
 @app.route('/breweries/<int:brewery_id>/new/')
 def newBeer(brewery_id):
