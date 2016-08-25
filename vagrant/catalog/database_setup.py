@@ -31,6 +31,14 @@ class Beer(Base):
     brewery_id = Column(
         Integer, ForeignKey('breweries.id'))
 
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'id': self.id,
+            'style': self.style
+        }
+
 
 #### INSERT at end of file ####
 engine = create_engine(

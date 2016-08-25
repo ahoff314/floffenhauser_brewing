@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash
+from flask import Flask, redirect, render_template, request, url_for, flash, jsonify
 from flask.ext.bootstrap import Bootstrap
 
 app = Flask(__name__)
@@ -13,6 +13,14 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+# MAKING an API endpoint GET
+
+@app.route('/breweries/<int:brewery_id>/beers/JSON')
+def beersJSON(brewery_id):
+    brewery = session.query(Brewery).first()
+    beers = session.query(Beer).filter_by(brewery_id=brewery.id)
+    return jsonify(Beer=[i.serialize for i in beers])
 
 # HOME PAGE
 @app.route('/')
@@ -65,10 +73,13 @@ def deleteBeer(brewery_id, id):
     else:
         return render_template('deletebeer.html', i = itemToDelete)
 
-
+# ABOUT ROUTE
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+#JSONIFY
+
 
 
 if __name__ == '__main__':
