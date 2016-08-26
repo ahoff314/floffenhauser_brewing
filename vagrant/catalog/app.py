@@ -31,9 +31,9 @@ def home():
 
 
 # BREWERY INFO PAGE
-@app.route('/breweries/<int:brewery_id>/')
-def index(brewery_id):
-    brewery = session.query(Brewery).first()
+@app.route('/breweries/<int:git aid>/')
+def index(id):
+    brewery = session.query(Brewery).filter_by(id=id).one()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return render_template('beers.html', brewery=brewery, beers=beers)
 
