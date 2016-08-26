@@ -22,6 +22,7 @@ def beersJSON(brewery_id):
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return jsonify(Beer=[i.serialize for i in beers])
 
+
 # HOME PAGE
 @app.route('/')
 def home():
@@ -29,10 +30,16 @@ def home():
     return render_template('index.html', brewery=brewery)
 
 
-# BREWERY INFO PAGE
+# PARTICIPATING BREWERIES WITH LINKS
+@app.route('/breweries/')
+def showBreweries():
+    breweries = session.query(Brewery).all()
+    return render_template('breweries.html', breweries=breweries)
+
+# EACH BREWERY INFO PAGE
 @app.route('/breweries/<int:brewery_id>/')
 def index(brewery_id):
-    brewery = session.query(Brewery).first()
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return render_template('beers.html', brewery=brewery, beers=beers)
 
