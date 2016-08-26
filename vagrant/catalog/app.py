@@ -67,9 +67,17 @@ def editBrewery(id):
 
 
 # DELETE BREWERY
-@app.route('/breweries/<int:brewery_id>/delete/')
-def deleteBrewery(brewery_id):
-    return "Yupz def working"
+@app.route('/breweries/<int:id>/delete/', methods=['GET', 'POST'])
+def deleteBrewery(id):
+    breweryToDelete = session.query(Brewery).filter_by(id=id).one()
+    if request.method == 'POST':
+        session.delete(breweryToDelete)
+        session.commit()
+        flash("This brewery has been removed.")
+        return redirect(url_for('home'))
+    else:
+        return render_template('deletebrewery.html', i = breweryToDelete)
+
 
 
 # NEW BEER ROUTE
