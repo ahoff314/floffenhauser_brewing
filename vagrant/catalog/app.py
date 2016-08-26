@@ -75,7 +75,7 @@ def deleteBrewery(brewery_id):
         flash("This brewery has been removed.")
         return redirect(url_for('home'))
     else:
-        return render_template('deletebrewery.html', i = breweryToDelete)
+        return render_template('deletebrewery.html', brewery = breweryToDelete)
 
 
 
