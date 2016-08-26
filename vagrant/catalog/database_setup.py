@@ -30,6 +30,7 @@ class Beer(Base):
         String(80))
     brewery_id = Column(
         Integer, ForeignKey('breweries.id'))
+    brewery = relationship(Brewery)
 
     @property
     def serialize(self):
