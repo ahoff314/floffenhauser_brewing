@@ -22,11 +22,13 @@ def beersJSON(brewery_id):
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return jsonify(Beer=[i.serialize for i in beers])
 
+
 # HOME PAGE
 @app.route('/')
 def home():
     brewery = session.query(Brewery).all()
     return render_template('index.html', brewery=brewery)
+
 
 # BREWERY INFO PAGE
 @app.route('/breweries/<int:brewery_id>/')
@@ -34,6 +36,41 @@ def index(brewery_id):
     brewery = session.query(Brewery).first()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return render_template('beers.html', brewery=brewery, beers=beers)
+
+
+# NEW BREWERY ROUTE
+@app.route('/brewery/new/', methods=['GET', 'POST'])
+def newBrewery():
+    if request.method == 'POST':
+        newBrewery = Brewery(name=request.form['name'])
+        session.add(newBrewery)
+        session.commit()
+        flash('Your brewery has been added. Cheers!')
+        return redirect(url_for('home'))
+    else:
+        return render_template('newbrewery.html')
+
+
+# EDIT BREWERY
+@app.route('/breweries/<int:id>/edit/', methods=['GET', 'POST'])
+def editBrewery(id):
+    editedBrewery = session.query(Brewery).filter_by(id=id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedBrewery.name = request.form['name']
+        session.add(editedBrewery)
+        session.commit()
+        flash("This brewery has been successfully edited. Cheers!")
+        return redirect(url_for('home'))
+    else:
+        return render_template('editbrewery.html', i=editedBrewery)
+
+
+# DELETE BREWERY
+@app.route('/breweries/<int:brewery_id>/delete/')
+def deleteBrewery(brewery_id):
+    return "Yupz def working"
+
 
 # NEW BEER ROUTE
 @app.route('/breweries/<int:brewery_id>/new/', methods=['GET', 'POST'])

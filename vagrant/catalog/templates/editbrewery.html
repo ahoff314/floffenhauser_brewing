@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Edit Brewery | {{i.name}} {% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="page-header main"> Edit Brewery</h1>
+
+
+<form action="{{ url_for('editBrewery', id = i.id )}}" method = 'POST'>
+
+    <p>Name:</p>
+    <input type ='text' size='80' name='name' placeholder = '{{i.name}}'>
+
+    <input type='submit' value='Edit'>
+
+    <a href = '{{url_for('home', id =i.id)}}'> CANCEL </a>
+
+</form>
+
+
+
+
+{% endblock %}

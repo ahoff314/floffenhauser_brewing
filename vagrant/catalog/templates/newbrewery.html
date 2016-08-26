@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %} FBC {% endblock %}
-
-
+{% block title %} New Brewery {% endblock %}
 
 {% block content %}
 
 
-<h1 class="page-header main"> New Beer</h1>
+<h1 class="page-header main"> New Brewery</h1>
 
 
-<form action="{{ url_for('newBeer', brewery_id=brewery_id )}}" method = 'POST'>
+<form action="{{ url_for('newBrewery', brewery_id=brewery_id )}}" method = 'POST'>
 
     <p>Name:</p>
     <input type ='text' size='80' name='name'>
