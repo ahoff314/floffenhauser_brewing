@@ -90,7 +90,7 @@ def deleteBrewery(brewery_id):
 @app.route('/breweries/<int:brewery_id>/new/', methods=['GET', 'POST'])
 def newBeer(brewery_id):
     if request.method == 'POST':
-        newBeer = Beer(name=request.form['name'], brewery_id=brewery_id)
+        newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id)
         session.add(newBeer)
         session.commit()
         flash('New beer has been added. Cheers!')
