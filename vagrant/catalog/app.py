@@ -14,14 +14,19 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# MAKING an API endpoint GET for beers and breweries
 
+# API endpoint GET for all beers, specific beers, and all breweries
 @app.route('/breweries/<int:brewery_id>/beers/JSON')
 def beersJSON(brewery_id):
     brewery = session.query(Brewery).first()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return jsonify(Beer=[i.serialize for i in beers])
 
+@app.route('/breweries/<int:brewery_id>/beers/<int:id>/JSON')
+def specificBeerJSON(brewery_id, id):
+    brewery = session.query(Brewery).first()
+    beers = session.query(Beer).filter_by(id=id)
+    return jsonify(Beer=[i.serialize for i in beers])
 
 @app.route('/breweries/JSON')
 def breweriesJSON():
