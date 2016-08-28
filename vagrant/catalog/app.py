@@ -41,7 +41,7 @@ def showLogin():
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
-
+# Connect session for authentication
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
@@ -205,6 +205,8 @@ def index(brewery_id):
 # NEW BREWERY ROUTE
 @app.route('/brewery/new/', methods=['GET', 'POST'])
 def newBrewery():
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         newBrewery = Brewery(name=request.form['name'])
         session.add(newBrewery)
@@ -218,6 +220,8 @@ def newBrewery():
 # EDIT BREWERY
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -233,6 +237,8 @@ def editBrewery(brewery_id):
 # DELETE BREWERY
 @app.route('/breweries/<int:brewery_id>/delete/', methods=['GET', 'POST'])
 def deleteBrewery(brewery_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
     if request.method == 'POST':
         session.delete(breweryToDelete)
@@ -247,6 +253,8 @@ def deleteBrewery(brewery_id):
 # NEW BEER ROUTE
 @app.route('/breweries/<int:brewery_id>/new/', methods=['GET', 'POST'])
 def newBeer(brewery_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id)
         session.add(newBeer)
@@ -259,6 +267,8 @@ def newBeer(brewery_id):
 # EDIT BEER ROUTE
 @app.route('/breweries/<int:brewery_id>/<int:id>/edit/', methods=['GET', 'POST'])
 def editBeer(brewery_id, id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedItem = session.query(Beer).filter_by(id=id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -273,6 +283,8 @@ def editBeer(brewery_id, id):
 # DELETE BEER ROUTE
 @app.route('/breweries/<int:brewery_id>/<int:id>/delete/', methods=['GET', 'POST'])
 def deleteBeer(brewery_id, id):
+    if 'username' not in login_session:
+        return redirect('/login')
     itemToDelete = session.query(Beer).filter_by(id=id).one()
     if request.method == 'POST':
         session.delete(itemToDelete)
