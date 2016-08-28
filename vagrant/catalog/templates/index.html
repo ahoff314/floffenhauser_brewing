@@ -7,17 +7,21 @@
 {% block content %}
 
 <h1 class="page-header main text-center"> FLOFFENHAUSER BREWING CO. PRESENTS</h1>
-<div class="alert alert-success">
+
+<div>
+    <!--MESSAGE FLASHING EXAMPLE -->
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                <li><strong> {{ message }}</strong></li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
+    {% if messages %}
+
+    <ul class="alert alert-success">
+    {% for message in messages %}
+      <li><strong>{{message}}</strong></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </div>
+
 <div class="text-center">
     <img src="static/brewtopia.png">
 </div>

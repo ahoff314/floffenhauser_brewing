@@ -47,6 +47,20 @@ class Beer(Base):
             'style': self.style
         }
 
+'''
+class User(Base):
+    __tablename__ = 'users'
+
+    name = Column(
+            String(80), nullable=False)
+    email = Column(
+            String(80)),
+    picture = Column(
+            String(80)),
+    id = Column(
+         Integer, primary_key=True)
+'''
+
 
 #### INSERT at end of file ####
 engine = create_engine(
