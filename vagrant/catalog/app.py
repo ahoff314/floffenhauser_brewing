@@ -11,6 +11,7 @@ from database_setup import Base, Brewery, Beer
 from flask import session as login_session
 import random, string
 
+# IMPORTS FOR THIS STEP
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -20,7 +21,10 @@ import requests
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "Brewtopia"
 
+
+# Connect to Database and create database session
 engine = create_engine('sqlite:///brew.db')
 Base.metadata.bind = engine
 
@@ -28,26 +32,34 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-# LOGIN ROUTE
+# Create anti-forgery state token
 @app.route('/login')
 def showLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
     login_session['state'] = state
-    return render_template('login.html')
+    # return "The current session state is %s" % login_session['state']
+    return render_template('login.html', STATE=state)
 
-@app.route('/gconnect', methods = ['POST'])
+
+@app.route('/gconnect', methods=['POST'])
 def gconnect():
+    # Validate state token
     if request.args.get('state') != login_session['state']:
-        response = make_response(json.dumps('Invalid state passed'), 401)
-        response.headers['Content-type'] = 'application/json'
+        response = make_response(json.dumps('Invalid state parameter.'), 401)
+        response.headers['Content-Type'] = 'application/json'
         return response
+    # Obtain authorization code
     code = request.data
+
     try:
+        # Upgrade the authorization code into a credentials object
         oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps('Failed to upgrade the authorization code'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -88,7 +100,7 @@ def gconnect():
         return response
 
     # Store the access token in the session for later use.
-    login_session['credentials'] = credentials
+    login_session['credentials'] = credentials.access_token #CRITICAL
     login_session['gplus_id'] = gplus_id
 
     # Get user info
