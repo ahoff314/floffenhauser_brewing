@@ -290,9 +290,9 @@ def deleteBeer(brewery_id, id):
         session.delete(itemToDelete)
         session.commit()
         flash("This beer has been removed.")
-        return redirect(url_for('index', brewery_id = brewery_id))
+        return redirect(url_for('index', brewery_id=brewery_id))
     else:
-        return render_template('deletebeer.html', i = itemToDelete)
+        return render_template('deletebeer.html', i=itemToDelete)
 
 # ABOUT ROUTE
 @app.route('/about')
