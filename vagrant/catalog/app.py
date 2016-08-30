@@ -6,7 +6,7 @@ bootstrap = Bootstrap(app)
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Brewery, Beer
+from database_setup import Base, Brewery, Beer, User
 
 from flask import session as login_session
 import random, string
@@ -114,6 +114,11 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Cheers, '
     output += login_session['username']
@@ -125,6 +130,27 @@ def gconnect():
     print "done!"
     return output
 
+# HELPER FUNCTIONS
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 # DISCONNECT revoke a user's token and reset session
 @app.route('/gdisconnect')
@@ -208,7 +234,7 @@ def newBrewery():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newBrewery = Brewery(name=request.form['name'])
+        newBrewery = Brewery(name=request.form['name'], user_id=login_session['gplus_id'])
         session.add(newBrewery)
         session.commit()
         flash('Your brewery has been added. Cheers!')
@@ -256,7 +282,8 @@ def newBeer(brewery_id):
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id)
+        newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id,
+                       user_id=breweries.user_id)
         session.add(newBeer)
         session.commit()
         flash('New beer has been added. Cheers!')
