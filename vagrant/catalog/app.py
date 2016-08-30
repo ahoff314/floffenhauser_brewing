@@ -281,9 +281,10 @@ def deleteBrewery(brewery_id):
 def newBeer(brewery_id):
     if 'username' not in login_session:
         return redirect('/login')
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
     if request.method == 'POST':
         newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id,
-                       user_id=breweries.user_id)
+                       user_id=brewery.user_id)
         session.add(newBeer)
         session.commit()
         flash('New beer has been added. Cheers!')
