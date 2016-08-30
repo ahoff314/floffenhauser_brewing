@@ -10,6 +10,15 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
+
+
 class Brewery(Base):
     __tablename__ = 'breweries'
 
@@ -17,6 +26,8 @@ class Brewery(Base):
         String(80), nullable=False)
     id = Column(
         Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
@@ -38,6 +49,8 @@ class Beer(Base):
     brewery_id = Column(
         Integer, ForeignKey('breweries.id'))
     brewery = relationship(Brewery)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
@@ -47,24 +60,10 @@ class Beer(Base):
             'style': self.style
         }
 
-'''
-class User(Base):
-    __tablename__ = 'users'
-
-    name = Column(
-            String(80), nullable=False)
-    email = Column(
-            String(80)),
-    picture = Column(
-            String(80)),
-    id = Column(
-         Integer, primary_key=True)
-'''
-
 
 #### INSERT at end of file ####
 engine = create_engine(
-    'sqlite:///brew.db'
+    'sqlite:///brews.db'
 )
 
 Base.metadata.create_all(engine)

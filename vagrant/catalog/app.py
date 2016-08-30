@@ -25,7 +25,7 @@ APPLICATION_NAME = "Brewtopia"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///brew.db')
+engine = create_engine('sqlite:///brews.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -299,7 +299,7 @@ def deleteBeer(brewery_id, id):
 def about():
     return render_template('about.html')
 
-# 404
+# Error handling 404 and 500
 
 @app.errorhandler(404)
 def page_not_found(error):
@@ -313,4 +313,4 @@ def internal_error(error):
 if __name__ == '__main__':
     app.secret_key = 'super_secret'
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)
