@@ -155,7 +155,7 @@ def getUserID(email):
 # DISCONNECT revoke a user's token and reset session
 @app.route('/gdisconnect')
 def gdisconnect():
-    access_token = login_session.get['credentials']
+    access_token = login_session['credentials']
     print("In gdisconnect access token is {}".format(access_token))
     print("Username is {}".format(login_session['username']))
     if access_token is None:
@@ -219,18 +219,32 @@ def showBreweries():
     breweries = session.query(Brewery).all()
     return render_template('breweries.html', breweries=breweries)
 
+'''
 # EACH BREWERY INFO PAGE
 @app.route('/breweries/<int:brewery_id>/')
 @app.route('/brewery/<int:brewery_id>/beers/')
 def index(brewery_id):
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    beers = session.query(Beer).filter_by(brewery_id=brewery.id)
-    #creator = getUserInfo(brewery.user_id)
-    if 'username' not in login_session:
-        return render_template('publicbeers.html', beers=beers, brewery=brewery)
+    creator = getUserInfo(brewery.user_id)
+    beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
+    if 'username' not in login_session or creator.id != login_session['gplus_id']:
+        return render_template('publicmenu.html', beers=beers, brewery=brewery, creator=creator)
     else:
-        return render_template('beers.html', beers=beers, brewery=brewery)
+        return render_template('beers.html', beeers=beers, brewery=brewery, creator=creator)
+'''
 
+
+@app.route('/brewery/<int:brewery_id>/beers/')
+def brews(brewery_id):
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
+    return render_template('publicbeers.html', beeers=beers, brewery=brewery)
+
+@app.route('/breweries/<int:brewery_id>/')
+def index(brewery_id):
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
+    return render_template('beers.html', beeers=beers, brewery=brewery)
 
 # NEW BREWERY ROUTE
 @app.route('/brewery/new/', methods=['GET', 'POST'])
