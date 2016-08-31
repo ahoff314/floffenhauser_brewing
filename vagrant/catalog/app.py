@@ -233,6 +233,7 @@ def index(brewery_id):
         return render_template('beers.html', beeers=beers, brewery=brewery, creator=creator)
 '''
 
+# PUBLIC BEER MENU AND EDITABLE MAIN BREWERY PAGE
 
 @app.route('/brewery/<int:brewery_id>/beers/')
 def brews(brewery_id):
@@ -244,7 +245,7 @@ def brews(brewery_id):
 def index(brewery_id):
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
-    return render_template('beers.html', beeers=beers, brewery=brewery)
+    return render_template('beers.html', beers=beers, brewery=brewery)
 
 # NEW BREWERY ROUTE
 @app.route('/brewery/new/', methods=['GET', 'POST'])
@@ -268,7 +269,7 @@ def editBrewery(brewery_id):
     if 'username' not in login_session:
         return redirect('/login')
     if editedBrewery.user_id != login_session['gplus_id']:
-        return "<script>function myFunction() {alert('You are not authorized to add beers to this brewery." \
+        return "<script>function myFunction() {alert('You are not authorized to edit this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:

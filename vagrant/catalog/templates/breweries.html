@@ -15,7 +15,7 @@
 <!--<h1 class="text-center">Featuring:</h1>-->
     <br>
         {% for i in breweries %}
-            <h1 class="text-center">{{i.name}}</h1>
+            <a href='{{url_for('brews', brewery_id =i.id)}}'><h1 class="text-center">{{i.name}}</h1></a>
         {% endfor %}
     </br>
 
