@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, jsonify
+from flask import Flask, redirect, render_template, request, url_for, flash, Markup
 from flask.ext.bootstrap import Bootstrap
 
 app = Flask(__name__)
@@ -256,7 +256,8 @@ def newBrewery():
         newBrewery = Brewery(name=request.form['name'], user_id=login_session['gplus_id'])
         session.add(newBrewery)
         session.commit()
-        flash('Your brewery has been added. Cheers!')
+        flash(Markup('Your brewery has been added. To add beers and edit your brewery go '
+                     '<a href="/" class="alert-link">here</a>. Cheers!')) # change link to url-for beers.html
         return redirect(url_for('home'))
     else:
         return render_template('newbrewery.html')
@@ -268,7 +269,7 @@ def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if editedBrewery.user_id != login_session['gplus_id']:
+    if editedBrewery.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to edit this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
