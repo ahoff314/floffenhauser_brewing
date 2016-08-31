@@ -154,9 +154,8 @@ def getUserID(email):
 
 # DISCONNECT revoke a user's token and reset session
 @app.route('/gdisconnect')
-@app.route('/gdisconnect')
 def gdisconnect():
-    access_token = login_session['credentials']
+    access_token = login_session.get['credentials']
     print("In gdisconnect access token is {}".format(access_token))
     print("Username is {}".format(login_session['username']))
     if access_token is None:
@@ -222,10 +221,15 @@ def showBreweries():
 
 # EACH BREWERY INFO PAGE
 @app.route('/breweries/<int:brewery_id>/')
+@app.route('/brewery/<int:brewery_id>/beers/')
 def index(brewery_id):
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
-    return render_template('beers.html', brewery=brewery, beers=beers)
+    #creator = getUserInfo(brewery.user_id)
+    if 'username' not in login_session:
+        return render_template('publicbeers.html', beers=beers, brewery=brewery)
+    else:
+        return render_template('beers.html', beers=beers, brewery=brewery)
 
 
 # NEW BREWERY ROUTE
@@ -246,9 +250,12 @@ def newBrewery():
 # EDIT BREWERY
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
+    editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    if editedBrewery.user_id != login_session['gplus_id']:
+        return "<script>function myFunction() {alert('You are not authorized to add beers to this brewery." \
+               "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedBrewery.name = request.form['name']
@@ -263,17 +270,19 @@ def editBrewery(brewery_id):
 # DELETE BREWERY
 @app.route('/breweries/<int:brewery_id>/delete/', methods=['GET', 'POST'])
 def deleteBrewery(brewery_id):
+    breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
+    if breweryToDelete.user_id != login_session['gplus_id']:
+        return "<script>function myFunction() {alert('You are not authorized to delete this brewery." \
+               "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(breweryToDelete)
         session.commit()
         flash("This brewery has been removed.")
         return redirect(url_for('home'))
     else:
-        return render_template('deletebrewery.html', brewery = breweryToDelete)
-
+        return render_template('deletebrewery.html', brewery=breweryToDelete)
 
 
 # NEW BEER ROUTE
@@ -282,6 +291,9 @@ def newBeer(brewery_id):
     if 'username' not in login_session:
         return redirect('/login')
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    if brewery.user_id != login_session['gplus_id']:
+        return "<script>function myFunction() {alert('You are not authorized to add a new beer to this brewery." \
+               "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         newBeer = Beer(name=request.form['name'], style=request.form['style'], brewery_id=brewery_id,
                        user_id=brewery.user_id)
@@ -298,6 +310,10 @@ def editBeer(brewery_id, id):
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(Beer).filter_by(id=id).one()
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    if brewery.user_id != login_session['gplus_id']:
+        return "<script>function myFunction() {alert('You are not authorized to edit this beer." \
+               "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -314,6 +330,10 @@ def deleteBeer(brewery_id, id):
     if 'username' not in login_session:
         return redirect('/login')
     itemToDelete = session.query(Beer).filter_by(id=id).one()
+    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    if brewery.user_id != login_session['gplus_id']:
+        return "<script>function myFunction() {alert('You are not authorized to delete this beer." \
+               "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()

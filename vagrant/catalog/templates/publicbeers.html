@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %} BEERTOPIA {% endblock %}
+
+
+
+{% block content %}
+
+<h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS:</h1>
+
+
+<div>
+    <!--MESSAGE FLASHING EXAMPLE -->
+        {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    <ul class="alert alert-success">
+    {% for message in messages %}
+      <li><strong>{{message}}</strong></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+
+<h2 class="main">{{ brewery.name }}</h2>
+
+
+<div>
+    {% for i in beers %}
+    <br>
+        <div>{{i.name}} | {{i.style}}</div>
+    </br>
+    {% endfor %}
+</div>
+
+
+
+
+
+{% endblock %}
