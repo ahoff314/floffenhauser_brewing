@@ -65,6 +65,8 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
+    print access_token
+    print login_session['user_id']
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
@@ -267,9 +269,10 @@ def newBrewery():
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
+    editedUser = session.query(User).first()
     if 'username' not in login_session:
         return redirect('/login')
-    if editedBrewery.user_id != login_session['user_id']:
+    if editedUser.id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to edit this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
