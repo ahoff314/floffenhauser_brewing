@@ -9,7 +9,7 @@
 <h1 class="page-header main"> Edit Brewery</h1>
 
 
-<form action="{{ url_for('editBrewery', brewery_id = brewery.id )}}" method = 'POST'>
+<form action="{{ url_for('editBrewery', brewery_id = brewery.id)}}" method = 'POST'>
 
     <p>Name:</p>
     <input type ='text' size='50' name='name' placeholder = '{{brewery.name}}'>
