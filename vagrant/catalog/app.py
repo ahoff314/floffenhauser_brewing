@@ -66,7 +66,7 @@ def gconnect():
     # Check that the access token is valid.
     access_token = credentials.access_token
     print access_token
-    print login_session['user_id']
+    #print login_session['user_id']
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
@@ -127,8 +127,9 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("You are now logged in as %s" % login_session['username'])
+    output += ' "style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    flash(Markup("You are now logged in as %s. To add your brewery go <a href='/brewery/new/'>here</a>. Cheers!"
+                 % login_session['username']))
     print "done!"
     return output
 
@@ -269,7 +270,7 @@ def newBrewery():
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    editedUser = session.query(User).filter_by(id=id).one()
+    editedUser = session.query(User).first()
     if 'username' not in login_session:
         return redirect('/login')
     if editedUser.id != login_session['user_id']:
@@ -292,7 +293,7 @@ def deleteBrewery(brewery_id):
     breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if breweryToDelete.user_id != login_session['gplus_id']:
+    if breweryToDelete.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to delete this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
