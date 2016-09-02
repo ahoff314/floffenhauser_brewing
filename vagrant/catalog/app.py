@@ -269,7 +269,7 @@ def newBrewery():
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    editedUser = session.query(User).first()
+    editedUser = session.query(User).filter_by(id=id).one()
     if 'username' not in login_session:
         return redirect('/login')
     if editedUser.id != login_session['user_id']:
