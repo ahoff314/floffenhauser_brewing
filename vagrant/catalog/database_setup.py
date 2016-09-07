@@ -63,7 +63,8 @@ class Beer(Base):
 
 #### INSERT at end of file ####
 engine = create_engine(
-    'sqlite:///brews.db'
+    'sqlite:///brew.db',
+    convert_unicode=True
 )
 
 Base.metadata.create_all(engine)

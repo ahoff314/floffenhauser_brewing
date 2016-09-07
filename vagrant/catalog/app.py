@@ -25,7 +25,7 @@ APPLICATION_NAME = "Brewtopia"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///brews.db')
+engine = create_engine('sqlite:///brew.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -65,8 +65,11 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
+    # Troubleshooting print
+
     print access_token
-    #print login_session['user_id']
+    print login_session['user_id']
+    print type(login_session['gplus_id'])
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
@@ -270,10 +273,9 @@ def newBrewery():
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    editedUser = session.query(User).first()
     if 'username' not in login_session:
         return redirect('/login')
-    if editedUser.id != login_session['user_id']:
+    if editedBrewery.user_id != float(login_session['gplus_id']):
         return "<script>function myFunction() {alert('You are not authorized to edit this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
@@ -293,7 +295,7 @@ def deleteBrewery(brewery_id):
     breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if breweryToDelete.user_id != login_session['user_id']:
+    if breweryToDelete.user_id != float(login_session['gplus_id']):
         return "<script>function myFunction() {alert('You are not authorized to delete this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
@@ -331,7 +333,7 @@ def editBeer(brewery_id, id):
         return redirect('/login')
     editedItem = session.query(Beer).filter_by(id=id).one()
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    if brewery.user_id != login_session['gplus_id']:
+    if brewery.user_id != login_session['user_id']:
         return "<script>function myFunction() {alert('You are not authorized to edit this beer." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
