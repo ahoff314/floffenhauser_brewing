@@ -38,8 +38,16 @@ def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
+
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
+    username = 'username'
+    '''
+    if 'username' not in login_session:
+        return render_template('login.html', STATE=state)
+    else:
+        return render_template('account.html', brewery=brewery, brewery_id=brewery_id)
+'''
 
 # Connect session for authentication
 @app.route('/gconnect', methods=['POST'])
@@ -220,24 +228,20 @@ def home():
 
 
 # PARTICIPATING BREWERIES WITH LINKS
+def base():
+    breweries = session.query(Brewery).all()
+    if 'username' not in login_session:
+        return redirect('/login')
+    else:
+        return render_template('base.html', breweries=breweries)
+
+
+# PARTICIPATING BREWERIES WITH LINKS
 @app.route('/breweries/')
 def showBreweries():
     breweries = session.query(Brewery).all()
     return render_template('breweries.html', breweries=breweries)
 
-'''
-# EACH BREWERY INFO PAGE
-@app.route('/breweries/<int:brewery_id>/')
-@app.route('/brewery/<int:brewery_id>/beers/')
-def index(brewery_id):
-    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    creator = getUserInfo(brewery.user_id)
-    beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
-    if 'username' not in login_session or creator.id != login_session['gplus_id']:
-        return render_template('publicmenu.html', beers=beers, brewery=brewery, creator=creator)
-    else:
-        return render_template('beers.html', beeers=beers, brewery=brewery, creator=creator)
-'''
 
 # PUBLIC BEER MENU AND EDITABLE MAIN BREWERY PAGE
 
