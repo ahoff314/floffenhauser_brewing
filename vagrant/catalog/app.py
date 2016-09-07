@@ -1,8 +1,6 @@
 from flask import Flask, redirect, render_template, request, url_for, flash, Markup
 from flask.ext.bootstrap import Bootstrap
-
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
+from flask import session as login_session
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -18,6 +16,11 @@ import httplib2
 import json
 from flask import make_response
 import requests
+
+
+
+app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -230,10 +233,7 @@ def home():
 # PARTICIPATING BREWERIES WITH LINKS
 def base():
     breweries = session.query(Brewery).all()
-    if 'username' not in login_session:
-        return redirect('/login')
-    else:
-        return render_template('base.html', breweries=breweries)
+    #return render_template('base.html', breweries=breweries, login_session=login_session)
 
 
 # PARTICIPATING BREWERIES WITH LINKS
