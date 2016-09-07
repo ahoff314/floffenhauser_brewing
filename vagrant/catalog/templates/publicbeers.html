@@ -1,43 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %} BREWTOPIA {% endblock %}
+{% block title %} BREWTOPIA | {{ brewery.name }} {% endblock %}
 
 
 
 {% block content %}
 
-<h1 class="page-header main"> FLOFFENHAUSER BREWING CO. PRESENTS:</h1>
+<h1 class="page-header main"> {{ brewery.name }}</h1>
 
 
-<div>
-    <!--MESSAGE FLASHING EXAMPLE -->
-        {% with messages = get_flashed_messages() %}
-    {% if messages %}
-
-    <ul class="alert alert-success">
-    {% for message in messages %}
-      <li><strong>{{message}}</strong></li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-</div>
-
-
-<h2 class="main">{{ brewery.name }}</h2>
-
-<p><a href='{{url_for('newBeer', brewery_id = brewery.id, id =id) }}'>Create new beer</a></p>
-
-
-<div>
+<div class="h2">
     {% for i in beers %}
     <br>
-        <div>Name | {{i.name}}</div>
-        <div>Style | {{i.style}}</div>
-        <div>
-            <a href='{{url_for('editBeer', brewery_id = brewery.id, id = i.id) }}'>Edit</a>
-            <a href='{{url_for('deleteBeer', brewery_id = brewery.id, id = i.id) }}'>Delete</a>
-        </div>
+        <div> {{i.name}} | {{ i.style }}</div>
     </br>
     {% endfor %}
 </div>

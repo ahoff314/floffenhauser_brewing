@@ -241,17 +241,14 @@ def index(brewery_id):
 
 # PUBLIC BEER MENU AND EDITABLE MAIN BREWERY PAGE
 
-@app.route('/brewery/<int:brewery_id>/beers/')
-def brews(brewery_id):
-    brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
-    return render_template('publicbeers.html', beeers=beers, brewery=brewery)
-
 @app.route('/breweries/<int:brewery_id>/')
 def index(brewery_id):
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
     beers = session.query(Beer).filter_by(brewery_id=brewery.id).all()
-    return render_template('beers.html', beers=beers, brewery=brewery)
+    if brewery.user_id != float(login_session['gplus_id']):
+        return render_template('publicbeers.html', beers=beers, brewery=brewery)
+    else:
+        return render_template('beers.html', beers=beers, brewery=brewery)
 
 # NEW BREWERY ROUTE
 @app.route('/brewery/new/', methods=['GET', 'POST'])
