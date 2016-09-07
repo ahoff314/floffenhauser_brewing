@@ -313,7 +313,7 @@ def newBeer(brewery_id):
     if 'username' not in login_session:
         return redirect('/login')
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    if brewery.user_id != login_session['gplus_id']:
+    if brewery.user_id != float(login_session['gplus_id']):
         return "<script>function myFunction() {alert('You are not authorized to add a new beer to this brewery." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
@@ -333,7 +333,7 @@ def editBeer(brewery_id, id):
         return redirect('/login')
     editedItem = session.query(Beer).filter_by(id=id).one()
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    if brewery.user_id != login_session['user_id']:
+    if brewery.user_id != float(login_session['gplus_id']):
         return "<script>function myFunction() {alert('You are not authorized to edit this beer." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
@@ -353,7 +353,7 @@ def deleteBeer(brewery_id, id):
         return redirect('/login')
     itemToDelete = session.query(Beer).filter_by(id=id).one()
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
-    if brewery.user_id != login_session['gplus_id']:
+    if brewery.user_id != float(login_session['gplus_id']):
         return "<script>function myFunction() {alert('You are not authorized to delete this beer." \
                "');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
