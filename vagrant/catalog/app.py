@@ -81,9 +81,9 @@ def gconnect():
     access_token = credentials.access_token
     # Troubleshooting print
 
-    print access_token
-    print login_session['user_id']
-    print type(login_session['gplus_id'])
+    # print access_token
+    # print login_session['user_id']
+
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
