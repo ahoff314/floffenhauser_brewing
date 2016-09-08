@@ -52,9 +52,11 @@ def showLogin():
         return render_template('account.html', brewery=brewery, brewery_id=brewery_id)
 '''
 
-@app.route('/account')
+@app.route('/account', methods=['GET'])
 def account():
-    return render_template('account.html')
+   breweries = session.query(Brewery).all()
+   return render_template('account.html', breweries=breweries)
+
 # Connect session for authentication
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -226,9 +228,13 @@ def breweriesJSON():
     beers = session.query(Brewery).filter_by(id=id)
     return jsonify(Brewery=[i.serialize for i in brewery])
 
+
+# pass login_session to base template
 @app.context_processor
 def inject_user():
-    return dict(user=login_session)
+    brewery = session.query(Brewery).all()
+    return dict(user=login_session, brewery=brewery)
+
 # HOME PAGE
 @app.route('/')
 def home():
