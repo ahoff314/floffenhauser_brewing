@@ -24,13 +24,22 @@
       <a class="nav-link" href="/brewery/new">Add your brewery!</a>
     </li>
   </ul>
-        <li class="nav-item">
+
+  {% if user.username %}
+    <li class="nav-item">
+      <a class="nav-link pull-right" href="/login">SIGN OUT</a>
+    </li>
+  {% else %}
+    <li class="nav-item">
       <a class="nav-link pull-right" href="/login">SIGN IN / SIGN UP</a>
     </li>
-  <li class="nav-item">
-      <a class="nav-link pull-right" href="/login">ACCOUNT</a>
+  {% endif %}
+
+    <li class="nav-item">
+      <a class="nav-link pull-right" href="/account">ACCOUNT</a>
     </li>
 </nav>
+
 
 
 {% endblock %}
