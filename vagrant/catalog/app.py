@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, Markup
+from flask import Flask, redirect, render_template, request, url_for, flash, Markup, jsonify
 from flask.ext.bootstrap import Bootstrap
 from flask import session as login_session
 
