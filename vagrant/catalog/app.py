@@ -275,8 +275,8 @@ def newBrewery():
         newBrewery = Brewery(name=request.form['name'], user_id=login_session['gplus_id'])
         session.add(newBrewery)
         session.commit()
-        flash(Markup('Your brewery has been added. To add beers and edit your brewery go '
-                     '<a href="/" class="alert-link">here</a>. Cheers!')) # change link to url-for beers.html
+        flash(Markup('Your brewery has been added. To add beers or edit your brewery go to your '
+                     '<a href="/account" class="alert-link">ACCOUNT</a>. Cheers!')) # change link to url-for beers.html
         return redirect(url_for('home'))
     else:
         return render_template('newbrewery.html')
