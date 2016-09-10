@@ -57,6 +57,7 @@ def account():
    breweries = session.query(Brewery).all()
    return render_template('account.html', breweries=breweries)
 
+
 # Connect session for authentication
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -233,19 +234,14 @@ def breweriesJSON():
 @app.context_processor
 def inject_user():
     brewery = session.query(Brewery).all()
-    return dict(user=login_session, brewery=brewery)
+    userdb = session.query(User).all()
+    return dict(user=login_session, brewery=brewery, userdb = userdb)
 
 # HOME PAGE
 @app.route('/')
 def home():
     brewery = session.query(Brewery).all()
     return render_template('index.html', brewery=brewery)
-
-
-# PARTICIPATING BREWERIES WITH LINKS
-def base():
-    breweries = session.query(Brewery).all()
-    #return render_template('base.html', breweries=breweries, login_session=login_session)
 
 
 # PARTICIPATING BREWERIES WITH LINKS
