@@ -26,9 +26,8 @@
             <h1> Your breweries:</h1>
 
                 {% for i in breweries %}
-                    {% if user.user_id  %}
                     <a href='{{url_for('index', brewery_id =i.id)}}'><h1 class="text-center"> {{i.name}} </h1></a>
-                    {% endif %}
+
                 {% endfor %}
 
 

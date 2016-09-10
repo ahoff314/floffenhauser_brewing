@@ -56,6 +56,10 @@ def showLogin():
 def account():
    breweries = session.query(Brewery).all()
    # userdb = session.query(User).filter_by(id=id).one())
+   # acctBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
+   #if acctBrewery.user_id != float(login_session['gplus_id']):
+    #   return "<script>function myFunction() {alert('You are not authorized to edit this beer." \
+     #         "');}</script><body onload='myFunction()''>"
    return render_template('account.html', breweries=breweries)
 
 
@@ -85,7 +89,7 @@ def gconnect():
     access_token = credentials.access_token
     # Troubleshooting print
 
-    # print access_token
+    print access_token
     # print login_session['user_id']
 
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
