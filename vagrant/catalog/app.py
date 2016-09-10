@@ -44,23 +44,13 @@ def showLogin():
 
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
-    username = 'username'
-    '''
-    if 'username' not in login_session:
-        return render_template('login.html', STATE=state)
-    else:
-        return render_template('account.html', brewery=brewery, brewery_id=brewery_id)
-'''
+
 
 @app.route('/account', methods=['GET'])
 def account():
-   breweries = session.query(Brewery).all()
-   # userdb = session.query(User).filter_by(id=id).one())
-   # acctBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
-   #if acctBrewery.user_id != float(login_session['gplus_id']):
-    #   return "<script>function myFunction() {alert('You are not authorized to edit this beer." \
-     #         "');}</script><body onload='myFunction()''>"
-   return render_template('account.html', breweries=breweries)
+    breweries = session.query(Brewery).all()
+    user_gplus = float(login_session['gplus_id'])
+    return render_template('account.html', breweries=breweries, user_gplus=user_gplus)
 
 
 # Connect session for authentication
