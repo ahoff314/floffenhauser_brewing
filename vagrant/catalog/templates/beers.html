@@ -5,9 +5,11 @@
 
 
 {% block content %}
-
-<h1 class="page-header main"> {{ brewery.name }} </h1>
-
+<div class="page-header main row">
+    <h1 class="col-md-8"> {{ brewery.name }} </h1>
+    <h1 class="col-md-2 btn btn-default"> <a href='{{url_for('editBrewery', brewery_id = brewery.id, id =id) }}'>EDIT BREWERY </a></h1>
+    <h1 class="col-md-2 btn btn-default"> <a href='{{url_for('deleteBrewery', brewery_id = brewery.id, id = id) }}'>DELETE BREWERY</a></h1>
+</div>
 
 <div>
     <!--MESSAGE FLASHING EXAMPLE -->
@@ -24,20 +26,19 @@
 </div>
 
 
-<p><a href='{{url_for('newBeer', brewery_id = brewery.id, id =id) }}'>Create new beer</a></p>
+<h3><a href='{{url_for('newBeer', brewery_id = brewery.id, id =id) }}'>Create new beer</a></h3>
 
-            <a href='{{url_for('editBrewery', brewery_id = brewery.id, id =id) }}'>Edit Brewery</a>
-            <a href='{{url_for('deleteBrewery', brewery_id = brewery.id, id = id) }}'>Delete Brewery</a>
+
 <div>
     {% for i in beers %}
-    <br>
-        <div>Name | {{i.name}}</div>
-        <div>Style | {{i.style}}</div>
-        <div>
-            <a href='{{url_for('editBeer', brewery_id = brewery.id, id = i.id) }}'>Edit</a>
-            <a href='{{url_for('deleteBeer', brewery_id = brewery.id, id = i.id) }}'>Delete</a>
-        </div>
-    </br>
+        <br>
+            <div class="h3">{{i.name}} | {{i.style}}</div>
+            <div>
+                <div class="btn btn-default"><a href='{{url_for('editBeer', brewery_id = brewery.id, id = i.id) }}'>Edit</a></div>
+                <div class="btn btn-default"><a href='{{url_for('deleteBeer', brewery_id = brewery.id, id = i.id) }}'>Delete</a></div>
+            </div>
+        </br>
+
     {% endfor %}
 </div>
 

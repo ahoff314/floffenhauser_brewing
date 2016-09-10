@@ -22,7 +22,7 @@
     <div class="col-md-6">
         <!--<h1 class="text-center">Featuring:</h1>-->
 
-            <h1> Your breweries:</h1>
+            <h1 class="text-center"> Your breweries:
 
                 {% for i in breweries %}
                     {% if user_gplus == i.user_id %}
@@ -30,7 +30,7 @@
                     {% endif %}
                 {% endfor %}
 
-
+            </h1>
 
 
     </div>
