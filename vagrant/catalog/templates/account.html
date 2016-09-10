@@ -14,17 +14,19 @@
     <div class="col-md-6">
         <div class="h2">Welcome, {{user.username}}! </div>
         <div>
-            <!--<img src={{user.picture}}'>-->
+            <img src={{user.picture}}'>
         </div>
     </div>
 
+{{ userdb }}
 
     <div class="col-md-6">
         <!--<h1 class="text-center">Featuring:</h1>-->
 
             <h1> Your breweries:</h1>
+
                 {% for i in breweries %}
-                    {% if user.user_id %}
+                    {% if user.user_id  %}
                     <a href='{{url_for('index', brewery_id =i.id)}}'><h1 class="text-center"> {{i.name}} </h1></a>
                     {% endif %}
                 {% endfor %}

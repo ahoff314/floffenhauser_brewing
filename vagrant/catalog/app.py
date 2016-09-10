@@ -55,6 +55,7 @@ def showLogin():
 @app.route('/account', methods=['GET'])
 def account():
    breweries = session.query(Brewery).all()
+   # userdb = session.query(User).filter_by(id=id).one())
    return render_template('account.html', breweries=breweries)
 
 
@@ -234,8 +235,7 @@ def breweriesJSON():
 @app.context_processor
 def inject_user():
     brewery = session.query(Brewery).all()
-    userdb = session.query(User).all()
-    return dict(user=login_session, brewery=brewery, userdb = userdb)
+    return dict(user=login_session, brewery=brewery)
 
 # HOME PAGE
 @app.route('/')
