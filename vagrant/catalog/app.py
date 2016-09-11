@@ -18,7 +18,6 @@ from flask import make_response
 import requests
 
 
-
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
@@ -77,11 +76,6 @@ def gconnect():
 
     # Check that the access token is valid.
     access_token = credentials.access_token
-    # Troubleshooting print
-
-    print access_token
-    # print login_session['user_id']
-
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
     h = httplib2.Http()
@@ -170,6 +164,7 @@ def getUserID(email):
     except:
         return None
 
+
 # DISCONNECT revoke a user's token and reset session
 @app.route('/gdisconnect')
 def gdisconnect():
@@ -212,10 +207,12 @@ def beersJSON(brewery_id):
     beers = session.query(Beer).filter_by(brewery_id=brewery.id)
     return jsonify(Beer=[i.serialize for i in beers])
 
+
 @app.route('/breweries/<int:brewery_id>/beers/<int:id>/JSON')
 def specificBeerJSON(brewery_id, id):
     beers = session.query(Beer).filter_by(id=id, brewery_id=brewery_id)
     return jsonify(Beer=[i.serialize for i in beers])
+
 
 @app.route('/breweries/JSON')
 def breweriesJSON():
@@ -224,28 +221,28 @@ def breweriesJSON():
     return jsonify(Brewery=[i.serialize for i in brewery])
 
 
-# pass login_session to base template
+# Pass login_session to base template
 @app.context_processor
 def inject_user():
     brewery = session.query(Brewery).all()
     return dict(user=login_session, brewery=brewery)
 
-# HOME PAGE
+
+# HHome page
 @app.route('/')
 def home():
     brewery = session.query(Brewery).all()
     return render_template('index.html', brewery=brewery)
 
 
-# PARTICIPATING BREWERIES WITH LINKS
+# Participating breweries with links
 @app.route('/breweries/')
 def showBreweries():
     breweries = session.query(Brewery).all()
     return render_template('breweries.html', breweries=breweries)
 
 
-# PUBLIC BEER MENU AND EDITABLE MAIN BREWERY PAGE
-
+# Public beer menu and editable brewery main page
 @app.route('/breweries/<int:brewery_id>/')
 def index(brewery_id):
     brewery = session.query(Brewery).filter_by(id=brewery_id).one()
@@ -255,7 +252,8 @@ def index(brewery_id):
     else:
         return render_template('beers.html', beers=beers, brewery=brewery)
 
-# NEW BREWERY ROUTE
+
+# New brewery
 @app.route('/brewery/new/', methods=['GET', 'POST'])
 def newBrewery():
     if 'username' not in login_session:
@@ -271,7 +269,7 @@ def newBrewery():
         return render_template('newbrewery.html')
 
 
-# EDIT BREWERY
+# Edit brewery
 @app.route('/breweries/<int:brewery_id>/edit/', methods=['GET', 'POST'])
 def editBrewery(brewery_id):
     editedBrewery = session.query(Brewery).filter_by(id=brewery_id).one()
@@ -291,7 +289,7 @@ def editBrewery(brewery_id):
         return render_template('editbrewery.html', brewery=editedBrewery)
 
 
-# DELETE BREWERY
+# Delete brewery
 @app.route('/breweries/<int:brewery_id>/delete/', methods=['GET', 'POST'])
 def deleteBrewery(brewery_id):
     breweryToDelete = session.query(Brewery).filter_by(id=brewery_id).one()
@@ -309,7 +307,7 @@ def deleteBrewery(brewery_id):
         return render_template('deletebrewery.html', brewery=breweryToDelete)
 
 
-# NEW BEER ROUTE
+# New beer
 @app.route('/breweries/<int:brewery_id>/new/', methods=['GET', 'POST'])
 def newBeer(brewery_id):
     if 'username' not in login_session:
@@ -328,7 +326,8 @@ def newBeer(brewery_id):
     else:
         return render_template('newbeer.html', brewery_id=brewery_id)
 
-# EDIT BEER ROUTE
+
+# Edit beer
 @app.route('/breweries/<int:brewery_id>/<int:id>/edit/', methods=['GET', 'POST'])
 def editBeer(brewery_id, id):
     if 'username' not in login_session:
@@ -348,7 +347,8 @@ def editBeer(brewery_id, id):
     else:
         return render_template('editbeer.html', brewery_id=brewery_id, i=editedItem)
 
-# DELETE BEER ROUTE
+
+# Delete brewery
 @app.route('/breweries/<int:brewery_id>/<int:id>/delete/', methods=['GET', 'POST'])
 def deleteBeer(brewery_id, id):
     if 'username' not in login_session:
@@ -366,16 +366,18 @@ def deleteBeer(brewery_id, id):
     else:
         return render_template('deletebeer.html', i=itemToDelete)
 
-# ABOUT ROUTE
+
+# About page
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-# Error handling 404 and 500
 
+# Error handling 404 and 500
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
+
 
 @app.errorhandler(500)
 def internal_error(error):
