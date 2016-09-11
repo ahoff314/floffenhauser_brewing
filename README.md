@@ -1,10 +1,11 @@
 #FLOFFENHAUSER BREWING CO PRESENTS BREWTOPIA
 
-## Clone the repo
+## Clone the repo, navigate to the working directory
 `git clone https://github.com/ahoff314/floffenhauser_brewing.git`
 
 `cd vagrant/catalog`
 
+## Make sure Virtualbox and Vagrant are installed
 `vagrant up`
 
 `vagrant ssh`
