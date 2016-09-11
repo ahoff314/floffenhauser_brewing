@@ -1,6 +1,6 @@
 #FLOFFENHAUSER BREWING CO PRESENTS BREWTOPIA
 
-# Clone the repo
+## Clone the repo
 `git clone https://github.com/ahoff314/floffenhauser_brewing.git`
 
 `cd vagrant/catalog`
@@ -11,6 +11,6 @@
 
 `cd /vagrant/catalog/`
 
-# Run application
+## Run application
 `python app.py`
 
