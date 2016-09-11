@@ -214,8 +214,7 @@ def beersJSON(brewery_id):
 
 @app.route('/breweries/<int:brewery_id>/beers/<int:id>/JSON')
 def specificBeerJSON(brewery_id, id):
-    brewery = session.query(Brewery).first()
-    beers = session.query(Beer).filter_by(id=id)
+    beers = session.query(Beer).filter_by(id=id, brewery_id=brewery_id)
     return jsonify(Beer=[i.serialize for i in beers])
 
 @app.route('/breweries/JSON')
